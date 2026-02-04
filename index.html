@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>L A B _ T T</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="icon"
+      type="image/svg"
+      sizes="50x50"
+      href="./assets/ttx_favicon.png"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="w-screen h-screen relative bg-[#f2f2f2]">
+    <div id="desktop-view" class="hidden md:block w-full h-full">
+      <div
+        id="crosshair-x"
+        class="crosshair-line w-full h-[1px] top-0 left-0 translate-y-[-10px]"
+      ></div>
+      <div
+        id="crosshair-y"
+        class="crosshair-line h-full w-[1px] top-0 left-0 translate-x-[-10px]"
+      ></div>
+
+      <div id="canvas-container" class="w-full h-full absolute inset-0"></div>
+
+      <div
+        class="fixed bottom-12 right-12 flex flex-col items-end text-right space-y-4 pointer-events-none z-0"
+      >
+        <nav
+          class="flex space-x-6 text-sm font-semibold tracking-widest uppercase pointer-events-auto"
+        >
+          <button
+            id="btn-lab"
+            class="hover:text-gray-500 transition-colors focus:outline-none text-gray-900"
+          >
+            lab_tt
+          </button>
+          <button
+            id="btn-tt"
+            class="hover:text-gray-500 transition-colors focus:outline-none text-gray-900"
+          >
+            tt
+          </button>
+          <button
+            id="btn-dont-click"
+            class="hover:text-red-600 transition-colors focus:outline-none text-gray-900"
+          >
+            fuck!
+          </button>
+        </nav>
+
+        <div
+          id="info-display"
+          class="font-mono text-sm text-gray-800 min-h-[60px] w-96 pointer-events-auto whitespace-pre-wrap leading-tight"
+        >
+          <span id="typewriter-text" class="cursor-blink"></span>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="mobile-view"
+      class="flex md:hidden relative w-full h-full flex-col items-center justify-center p-8 text-center overflow-hidden"
+    >
+      <div
+        class="font-mono text-sm text-gray-800 max-w-xs leading-relaxed z-0 pointer-events-none select-none"
+      >
+        <span id="mobile-typewriter-text" class="cursor-blink"></span>
+      </div>
+      <div
+        id="mobile-logo-layer"
+        class="absolute inset-0 z-10 pointer-events-none"
+      ></div>
+    </div>
+    <script type="module" src="./script.js"></script>
+  </body>
+</html>
