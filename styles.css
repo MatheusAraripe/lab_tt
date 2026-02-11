@@ -29,8 +29,30 @@ body {
   user-select: none;
   background: transparent;
   touch-action: none;
+  pointer-events: auto;
 }
 
+/* Garante que os links tenham prioridade de clique e cursor correto */
+a {
+  text-decoration: none;
+  transition:
+    color 0.2s,
+    text-decoration 0.2s;
+  cursor: pointer;
+
+  /* REFORÇO DE CLIQUE */
+  position: relative;
+  z-index: 9999; /* Garante que fique acima de camadas locais */
+  pointer-events: auto !important; /* Força o navegador a aceitar cliques */
+}
+a:hover {
+  text-decoration: line-through;
+}
+
+/* Classe para o botão de navegação ativo */
+nav button.active {
+  text-decoration: line-through;
+}
 .crosshair-line {
   position: fixed;
   background-color: #a3a3a3;

@@ -3,11 +3,21 @@ import { artData } from "./data.js";
 // --- CONFIGURAÇÃO E DADOS ---
 const contentMap = {
   lab_tt:
-    "Bem-vindo ao laboratório.\nUm espaço de experimentos visuais e caos organizado.",
-  tt: "Matheus Araripe Lopes Corrêa\nCreative Coder & Designer.\nDisponível em behance.net/matheusararipe",
+    "Lab_tt é um espaço experimental para minhas ideias criativas e qualquer coisa que eu sentir vontade de jogar aqui.\nUm espaço de estudos visuais e caos organizado.",
+  tt: "Matheus Araripe, Creative Coder & Designer.\nVeja mais no behance",
   mobile_warning:
-    "Saia do celular!\nCertas coisas foram feitas para serem apreciadas em telas maiores!",
+    "Saia do celular (◣_◢)\nCertas coisas merecem telas maiores!\nVeja mais no Behance",
+  lab_js: "sketch01   sketch02   sketch03",
   dont_click: "┌∩┐(◣_◢)┌∩┐",
+};
+
+const sketchDescriptions = {
+  sketch01:
+    "Sistema interativo de partículas inspirado em grafos, onde agentes autônomos se conectam e formam estruturas orgânicas dinâmicas, unindo arte generativa, física e matemática.",
+  sketch02:
+    "Obra interativa que simula um “éter” digital de partículas guiadas por ruído Perlin, explorando o equilíbrio entre ordem e caos.",
+  sketch03:
+    "Experiência visual hipnótica de fragmentos emergindo da escuridão, com cores sombrias e ritmo caótico, evocando uma deriva sensorial atemporal.",
 };
 
 // --- UTILS ---
@@ -79,8 +89,8 @@ const createMobileLogo = (art) => {
 
 // --- TYPEWRITER ---
 let currentTypingTimeout = null;
-const typeWriter = (text, element, speed = 40) => {
-  element.innerText = "";
+const typeWriter = (text, element, speed = 40, onComplete = null) => {
+  element.innerText = ""; // Limpa antes de começar
   if (currentTypingTimeout) clearTimeout(currentTypingTimeout);
 
   let i = 0;
@@ -90,16 +100,19 @@ const typeWriter = (text, element, speed = 40) => {
         ? (element.innerHTML += "<br>")
         : (element.innerHTML += text.charAt(i));
       i++;
+
       const randomVariation = Math.random() * 30 - 15;
       const currentSpeed = Math.max(10, speed + randomVariation);
       currentTypingTimeout = setTimeout(type, currentSpeed);
+    } else {
+      if (onComplete) onComplete();
     }
   };
   type();
 };
 
 // --- DRAG AND DROP ---
-let globalZIndex = 50;
+let globalZIndex = 100;
 
 const makeDraggable = (el) => {
   let isDragging = false;
@@ -175,7 +188,10 @@ const initMobileView = () => {
   logoLayer.appendChild(logoElement);
 
   setTimeout(() => {
-    typeWriter(contentMap.mobile_warning, mobileTextElement, 50);
+    typeWriter(contentMap.mobile_warning, mobileTextElement, 50, () => {
+      // SUBSTITUIÇÃO DIRETA DO HTML FINAL PARA MOBILE
+      mobileTextElement.innerHTML = `Saia do celular (◣_◢)<br>Certas coisas merecem telas maiores!<br><a href="https://behance.net/matheusararipe" target="_blank" style="text-decoration: underline; pointer-events: auto;">Veja mais no Behance</a>`;
+    });
   }, 500);
 };
 
@@ -183,8 +199,12 @@ const initDesktopView = () => {
   const container = document.getElementById("canvas-container");
   const textElement = document.getElementById("typewriter-text");
   const btnLab = document.getElementById("btn-lab");
+  const btnLabJs = document.getElementById("btn-labjs");
   const btnTt = document.getElementById("btn-tt");
   const btnDontClick = document.getElementById("btn-dont-click");
+  const tooltip = document.getElementById("sketch-tooltip");
+
+  const navButtons = [btnLab, btnLabJs, btnTt, btnDontClick];
 
   initCrosshair();
 
@@ -202,20 +222,93 @@ const initDesktopView = () => {
         );
         obj.element.style.left = `${pos.x}px`;
         obj.element.style.top = `${pos.y}px`;
-        obj.element.style.zIndex = index + 10;
+        obj.element.style.zIndex = index + 40; // Mantendo z-index alto para as artes
         makeDraggable(obj.element);
         container.appendChild(obj.element);
       });
   };
 
-  const updateInfo = (key) => typeWriter(contentMap[key], textElement);
+  const updateInfo = (key) => {
+    const text = contentMap[key];
 
-  btnLab.addEventListener("click", () => updateInfo("lab_tt"));
-  btnTt.addEventListener("click", () => updateInfo("tt"));
-  btnDontClick.addEventListener("click", () => updateInfo("dont_click"));
+    typeWriter(text, textElement, 40, () => {
+      // Callback após digitação
 
+      if (key === "tt") {
+        textElement.innerHTML = `Matheus Araripe, Creative Coder & Designer.<br><a href="https://www.behance.net/matheusararipe" target="_blank">Veja mais no behance</a>`;
+      } else if (key === "lab_js") {
+        // ATUALIZADO: Adicionamos classes e data-attributes aos links
+        textElement.innerHTML = `<a href="https://matheusararipe.github.io/study-canvas-sketch/sketches/sketch01/dist/sketch01Funcional.html" target="_blank" class="sketch-link" data-id="sketch01">Agentes Elásticos</a>&nbsp;&nbsp;&nbsp<a href="https://matheusararipe.github.io/study-canvas-sketch/sketches/sketch02/dist/sketch02Funcional.html" target="_blank" class="sketch-link" data-id="sketch02">Ruído</a>&nbsp;&nbsp;&nbsp<a href="https://matheusararipe.github.io/study-canvas-sketch/sketches/sketch03/dist/" target="_blank" class="sketch-link" data-id="sketch03">Tripping</a>`;
+
+        // 3. Lógica do Hover (Tooltip)
+        const links = textElement.querySelectorAll(".sketch-link");
+
+        links.forEach((link) => {
+          // 1. MOSTRAR (MouseEnter)
+          link.addEventListener("mouseenter", (e) => {
+            const id = e.target.getAttribute("data-id");
+            // Define o texto
+            tooltip.innerHTML = sketchDescriptions[id].replace(/\n/g, "<br>");
+            // Torna visível
+            tooltip.classList.remove("opacity-0");
+          });
+
+          // 2. MOVER E POSICIONAR (MouseMove)
+          link.addEventListener("mousemove", (e) => {
+            // Recalcula o tamanho agora que o texto está dentro
+            const tooltipWidth = tooltip.offsetWidth;
+            const tooltipHeight = tooltip.offsetHeight;
+
+            // CÁLCULO DO 1º QUADRANTE (Superior Esquerdo do Mouse)
+            // X = Posição Mouse - Largura Balão - Margem
+            // Y = Posição Mouse - Altura Balão - Margem
+            const posX = e.clientX - tooltipWidth - 15;
+            const posY = e.clientY - tooltipHeight - 15;
+
+            // Aplica as coordenadas
+            tooltip.style.left = `${posX}px`;
+            tooltip.style.top = `${posY}px`;
+          });
+
+          // 3. ESCONDER (MouseLeave)
+          link.addEventListener("mouseleave", () => {
+            tooltip.classList.add("opacity-0");
+          });
+        });
+      }
+    });
+  };
+
+  const setActiveButton = (clickedBtn) => {
+    // Remove a classe 'active' de todos os botões
+    navButtons.forEach((btn) => btn.classList.remove("active"));
+    // Adiciona a classe 'active' apenas ao botão clicado
+    clickedBtn.classList.add("active");
+  };
+
+  // 4. ATUALIZAÇÃO DOS LISTENERS: Agora chamam setActiveButton
+  btnLab.addEventListener("click", () => {
+    updateInfo("lab_tt");
+    setActiveButton(btnLab);
+  });
+  btnLabJs.addEventListener("click", () => {
+    updateInfo("lab_js");
+    setActiveButton(btnLabJs);
+  });
+  btnTt.addEventListener("click", () => {
+    updateInfo("tt");
+    setActiveButton(btnTt);
+  });
+  btnDontClick.addEventListener("click", () => {
+    updateInfo("dont_click");
+    setActiveButton(btnDontClick);
+  });
+
+  // Inicialização
   renderArts();
   updateInfo("lab_tt");
+  // 5. Define o botão inicial como ativo
+  setActiveButton(btnLab);
 };
 
 document.addEventListener("DOMContentLoaded", app);
