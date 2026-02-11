@@ -7,7 +7,7 @@ const contentMap = {
   tt: "Matheus Araripe, Creative Coder & Designer.\nVeja mais no behance",
   mobile_warning:
     "Saia do celular (◣_◢)\nCertas coisas merecem telas maiores!\nVeja mais no Behance",
-  lab_js: "sketch01   sketch02   sketch03",
+  lab_js: "Agentes Elásticos   Ruído   Tripping",
   dont_click: "┌∩┐(◣_◢)┌∩┐",
 };
 
