@@ -5,8 +5,12 @@ const contentMap = {
   lab_tt:
     "Lab_tt é um espaço experimental para minhas ideias criativas e qualquer coisa que eu sentir vontade de jogar aqui.\nUm espaço de estudos visuais e caos organizado.",
   tt: "Matheus Araripe, Creative Coder & Designer.\nVeja mais no behance",
-  mobile_warning:
-    "Saia do celular (◣_◢)\nCertas coisas merecem telas maiores!\nVeja mais no Behance",
+  // NOVA: Aba de trabalhos
+  trabalhos_tt: "Inexplicável.idv   Inexplicável.com",
+  lab_tt_mobile:
+    "Saia do celular !!!\nLab_tt é um espaço experimental que não cabe em uma tela vertical.",
+  // mobile_warning:
+  //   "Saia do celular (◣_◢)\nCertas coisas merecem telas maiores!\nVeja mais no Behance",
   lab_js: "Agentes Elásticos   Ruído   Tripping",
   dont_click: "┌∩┐(◣_◢)┌∩┐",
 };
@@ -88,10 +92,9 @@ const createMobileLogo = (art) => {
 };
 
 // --- TYPEWRITER ---
-let currentTypingTimeout = null;
 const typeWriter = (text, element, speed = 40, onComplete = null) => {
-  element.innerText = ""; // Limpa antes de começar
-  if (currentTypingTimeout) clearTimeout(currentTypingTimeout);
+  element.innerText = "";
+  if (element.typingTimeout) clearTimeout(element.typingTimeout);
 
   let i = 0;
   const type = () => {
@@ -100,10 +103,10 @@ const typeWriter = (text, element, speed = 40, onComplete = null) => {
         ? (element.innerHTML += "<br>")
         : (element.innerHTML += text.charAt(i));
       i++;
-
       const randomVariation = Math.random() * 30 - 15;
       const currentSpeed = Math.max(10, speed + randomVariation);
-      currentTypingTimeout = setTimeout(type, currentSpeed);
+      // Salva o timeout no elemento
+      element.typingTimeout = setTimeout(type, currentSpeed);
     } else {
       if (onComplete) onComplete();
     }
@@ -179,6 +182,14 @@ const initMobileView = () => {
   const logoData = artData[0];
   const logoElement = createMobileLogo(logoData);
 
+  // Botões Mobile
+  const mobNavLab = document.getElementById("btn-mob-lab");
+  const mobNavTt = document.getElementById("btn-mob-tt");
+  const mobNavTrab = document.getElementById("btn-mob-trabalhos");
+  const mobNavFuck = document.getElementById("btn-mob-fuck");
+  const navButtons = [mobNavLab, mobNavTt, mobNavTrab, mobNavFuck];
+
+  // Centralizar Logo
   const centerX = (window.innerWidth - logoData.width) / 2;
   const centerY = (window.innerHeight - logoData.height) / 3;
   logoElement.style.left = `${centerX}px`;
@@ -187,24 +198,65 @@ const initMobileView = () => {
   makeDraggable(logoElement);
   logoLayer.appendChild(logoElement);
 
-  setTimeout(() => {
-    typeWriter(contentMap.mobile_warning, mobileTextElement, 50, () => {
-      // SUBSTITUIÇÃO DIRETA DO HTML FINAL PARA MOBILE
-      mobileTextElement.innerHTML = `Saia do celular (◣_◢)<br>Certas coisas merecem telas maiores!<br><a href="https://behance.net/matheusararipe" target="_blank" style="text-decoration: underline; pointer-events: auto;">Veja mais no Behance</a>`;
+  const setActiveButton = (clickedBtn) => {
+    navButtons.forEach((btn) => btn.classList.remove("active"));
+    clickedBtn.classList.add("active");
+  };
+
+  const updateInfoMobile = (key) => {
+    const text = contentMap[key];
+    typeWriter(text, mobileTextElement, 40, () => {
+      if (key === "tt") {
+        mobileTextElement.innerHTML = `Matheus Araripe<br>Creative Coder & Designer.<br><a href="https://www.behance.net/matheusararipe" target="_blank">Veja mais no behance</a>`;
+      } else if (key === "trabalhos_tt") {
+        mobileTextElement.innerHTML = `<a href="https://www.behance.net/gallery/246304295/IDV-INEXPLICAVEL" target="_blank">Inexplicável.idv</a>&nbsp;&nbsp;&nbsp;<a href="https://www.inexplicavelvinhos.com.br" target="_blank">Inexplicável.com</a>`;
+      }
     });
-  }, 500);
+  };
+
+  // Animação de entrada simultânea do menu no celular
+  setTimeout(() => {
+    typeWriter("lab_tt", mobNavLab, 30);
+    typeWriter("tt", mobNavTt, 30);
+    typeWriter("trabalhos.tt", mobNavTrab, 30);
+    // O último a terminar de digitar dispara o texto informativo base
+    typeWriter("fuck!", mobNavFuck, 30, () => {
+      updateInfoMobile("lab_tt_mobile");
+      setActiveButton(mobNavLab);
+    });
+  }, 400);
+
+  // Listeners do Mobile
+  mobNavLab.addEventListener("click", () => {
+    updateInfoMobile("lab_tt_mobile");
+    setActiveButton(mobNavLab);
+  });
+  mobNavTt.addEventListener("click", () => {
+    updateInfoMobile("tt");
+    setActiveButton(mobNavTt);
+  });
+  mobNavTrab.addEventListener("click", () => {
+    updateInfoMobile("trabalhos_tt");
+    setActiveButton(mobNavTrab);
+  });
+  mobNavFuck.addEventListener("click", () => {
+    updateInfoMobile("dont_click");
+    setActiveButton(mobNavFuck);
+  });
 };
 
 const initDesktopView = () => {
   const container = document.getElementById("canvas-container");
   const textElement = document.getElementById("typewriter-text");
-  const btnLab = document.getElementById("btn-lab");
-  const btnLabJs = document.getElementById("btn-labjs");
-  const btnTt = document.getElementById("btn-tt");
-  const btnDontClick = document.getElementById("btn-dont-click");
   const tooltip = document.getElementById("sketch-tooltip");
 
-  const navButtons = [btnLab, btnLabJs, btnTt, btnDontClick];
+  const btnLab = document.getElementById("btn-lab");
+  const btnTt = document.getElementById("btn-tt");
+  const btnTrabalhos = document.getElementById("btn-trabalhos");
+  const btnLabJs = document.getElementById("btn-labjs");
+  const btnFuck = document.getElementById("btn-fuck");
+
+  const navButtons = [btnLab, btnTt, btnTrabalhos, btnLabJs, btnFuck];
 
   initCrosshair();
 
@@ -232,10 +284,10 @@ const initDesktopView = () => {
     const text = contentMap[key];
 
     typeWriter(text, textElement, 40, () => {
-      // Callback após digitação
-
       if (key === "tt") {
-        textElement.innerHTML = `Matheus Araripe, Creative Coder & Designer.<br><a href="https://www.behance.net/matheusararipe" target="_blank">Veja mais no behance</a>`;
+        textElement.innerHTML = `Matheus Araripe<br>Creative Coder & Designer.<br><a href="https://www.behance.net/matheusararipe" target="_blank">Veja mais no behance</a>`;
+      } else if (key === "trabalhos_tt") {
+        textElement.innerHTML = `<a href="https://www.behance.net/gallery/246304295/IDV-INEXPLICAVEL" target="_blank">Inexplicável.idv</a>&nbsp;&nbsp;&nbsp;<a href="https://www.inexplicavelvinhos.com.br" target="_blank">Inexplicável.com</a>`;
       } else if (key === "lab_js") {
         // ATUALIZADO: Adicionamos classes e data-attributes aos links
         textElement.innerHTML = `<a href="https://matheusararipe.github.io/study-canvas-sketch/sketches/sketch01/dist/sketch01Funcional.html" target="_blank" class="sketch-link" data-id="sketch01">Agentes Elásticos</a>&nbsp;&nbsp;&nbsp<a href="https://matheusararipe.github.io/study-canvas-sketch/sketches/sketch02/dist/sketch02Funcional.html" target="_blank" class="sketch-link" data-id="sketch02">Ruído</a>&nbsp;&nbsp;&nbsp<a href="https://matheusararipe.github.io/study-canvas-sketch/sketches/sketch03/dist/" target="_blank" class="sketch-link" data-id="sketch03">Tripping</a>`;
@@ -280,34 +332,33 @@ const initDesktopView = () => {
   };
 
   const setActiveButton = (clickedBtn) => {
-    // Remove a classe 'active' de todos os botões
     navButtons.forEach((btn) => btn.classList.remove("active"));
-    // Adiciona a classe 'active' apenas ao botão clicado
     clickedBtn.classList.add("active");
   };
 
-  // 4. ATUALIZAÇÃO DOS LISTENERS: Agora chamam setActiveButton
   btnLab.addEventListener("click", () => {
     updateInfo("lab_tt");
     setActiveButton(btnLab);
-  });
-  btnLabJs.addEventListener("click", () => {
-    updateInfo("lab_js");
-    setActiveButton(btnLabJs);
   });
   btnTt.addEventListener("click", () => {
     updateInfo("tt");
     setActiveButton(btnTt);
   });
-  btnDontClick.addEventListener("click", () => {
+  btnTrabalhos.addEventListener("click", () => {
+    updateInfo("trabalhos_tt");
+    setActiveButton(btnTrabalhos);
+  });
+  btnLabJs.addEventListener("click", () => {
+    updateInfo("lab_js");
+    setActiveButton(btnLabJs);
+  });
+  btnFuck.addEventListener("click", () => {
     updateInfo("dont_click");
-    setActiveButton(btnDontClick);
+    setActiveButton(btnFuck);
   });
 
-  // Inicialização
   renderArts();
   updateInfo("lab_tt");
-  // 5. Define o botão inicial como ativo
   setActiveButton(btnLab);
 };
 
