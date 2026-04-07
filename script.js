@@ -8,7 +8,7 @@ const contentMap = {
   // NOVA: Aba de trabalhos
   trabalhos_tt: "Inexplicável.idv   Inexplicável.com",
   lab_tt_mobile:
-    "Saia do celular !!!\nLab_tt é um espaço experimental que não cabe em uma tela vertical.",
+    "Saia do celular!\nLab_tt é um espaço experimental que não cabe em uma tela vertical.",
   // mobile_warning:
   //   "Saia do celular (◣_◢)\nCertas coisas merecem telas maiores!\nVeja mais no Behance",
   lab_js: "Agentes Elásticos   Ruído   Tripping",
@@ -362,4 +362,33 @@ const initDesktopView = () => {
   setActiveButton(btnLab);
 };
 
-document.addEventListener("DOMContentLoaded", app);
+const initLoading = () => {
+  const loadingScreen = document.getElementById("loading-screen");
+  const loadingText = document.getElementById("loading-text");
+
+  // O texto retrô de inicialização (com barras simulando carregamento)
+  const bootSequence =
+    "> booting lab_tt.exe\n> loading assets...\n> [████████████] 100%\n> access granted.";
+
+  // Usamos a sua própria função typeWriter, um pouco mais rápida (speed 25)
+  typeWriter(bootSequence, loadingText, 25, () => {
+    // Quando terminar de digitar o boot, espera 800ms
+    setTimeout(() => {
+      // Faz o fade-out
+      loadingScreen.style.opacity = "0";
+
+      // Espera a animação de fade (700ms definidos no Tailwind) e então remove da tela
+      setTimeout(() => {
+        loadingScreen.style.display = "none";
+
+        // AGORA SIM, iniciamos a aplicação principal!
+        // Como o app() é chamado só agora, as animações de digitação
+        // das abas só vão começar depois que o usuário já estiver vendo a tela.
+        app();
+      }, 700);
+    }, 800);
+  });
+};
+
+// ALTERADO: Antes chamava app(), agora chama initLoading()
+document.addEventListener("DOMContentLoaded", initLoading);

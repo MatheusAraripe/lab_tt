@@ -17,6 +17,16 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body class="w-screen h-screen relative bg-[#f2f2f2]">
+    <div
+      id="loading-screen"
+      class="fixed inset-0 z-[999999] bg-[#f2f2f2] flex items-center justify-center transition-opacity duration-700"
+    >
+      <div
+        class="font-mono text-sm text-gray-800 text-left w-72 leading-relaxed select-none"
+      >
+        <span id="loading-text"></span><span class="cursor-blink"></span>
+      </div>
+    </div>
     <div id="desktop-view" class="hidden md:block w-full h-full">
       <div
         id="crosshair-x"
