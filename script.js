@@ -4,13 +4,11 @@ import { artData } from "./data.js";
 const contentMap = {
   lab_tt:
     "Lab_tt é um espaço experimental para minhas ideias criativas e qualquer coisa que eu sentir vontade de jogar aqui.\nUm espaço de estudos visuais e caos organizado.",
-  tt: "Matheus Araripe, Creative Coder & Designer.\nVeja mais no behance",
+  tt: "Matheus Araripe, Creative Coder & Designer.\nVeja mais aqui",
   // NOVA: Aba de trabalhos
-  trabalhos_tt: "Inexplicável.idv   Inexplicável.com",
+  trabalhos_tt: "Inexplicável.ig Inexplicável.idv   Inexplicável.com",
   lab_tt_mobile:
     "Saia do celular!\nLab_tt é um espaço experimental que não cabe em uma tela vertical.",
-  // mobile_warning:
-  //   "Saia do celular (◣_◢)\nCertas coisas merecem telas maiores!\nVeja mais no Behance",
   lab_js: "Agentes Elásticos   Ruído   Tripping",
   dont_click: "┌∩┐(◣_◢)┌∩┐",
 };
@@ -207,9 +205,9 @@ const initMobileView = () => {
     const text = contentMap[key];
     typeWriter(text, mobileTextElement, 40, () => {
       if (key === "tt") {
-        mobileTextElement.innerHTML = `Matheus Araripe<br>Creative Coder & Designer.<br><a href="https://www.behance.net/matheusararipe" target="_blank">Veja mais no behance</a>`;
+        mobileTextElement.innerHTML = `Matheus Araripe<br>Creative Coder & Designer.<br><a href="https://www.behance.net/matheusararipe" target="_blank">Veja mais aqui</a>`;
       } else if (key === "trabalhos_tt") {
-        mobileTextElement.innerHTML = `<a href="https://www.behance.net/gallery/246304295/IDV-INEXPLICAVEL" target="_blank">Inexplicável.idv</a>&nbsp;&nbsp;&nbsp;<a href="https://www.inexplicavelvinhos.com.br" target="_blank">Inexplicável.com</a>`;
+        mobileTextElement.innerHTML = `<a href="https://www.instagram.com/inexplicavelvinhos?igsh=cHdlOXVkYXJpNGNz" target="_blank">Inexplicável.ig</a>&nbsp;&nbsp;&nbsp;<a href="https://www.behance.net/gallery/246304295/IDV-INEXPLICAVEL" target="_blank">Inexplicável.idv</a>&nbsp;&nbsp;&nbsp;<a href="https://www.inexplicavelvinhos.com.br" target="_blank">Inexplicável.com</a>`;
       }
     });
   };
@@ -285,9 +283,9 @@ const initDesktopView = () => {
 
     typeWriter(text, textElement, 40, () => {
       if (key === "tt") {
-        textElement.innerHTML = `Matheus Araripe<br>Creative Coder & Designer.<br><a href="https://www.behance.net/matheusararipe" target="_blank">Veja mais no behance</a>`;
+        textElement.innerHTML = `Matheus Araripe,<br>Creative Coder & Designer.<br><a href="https://www.behance.net/matheusararipe" target="_blank">Veja mais aqui</a>`;
       } else if (key === "trabalhos_tt") {
-        textElement.innerHTML = `<a href="https://www.behance.net/gallery/246304295/IDV-INEXPLICAVEL" target="_blank">Inexplicável.idv</a>&nbsp;&nbsp;&nbsp;<a href="https://www.inexplicavelvinhos.com.br" target="_blank">Inexplicável.com</a>`;
+        textElement.innerHTML = `<a href="https://www.instagram.com/inexplicavelvinhos?igsh=cHdlOXVkYXJpNGNz" target="_blank">Inexplicável.ig</a>&nbsp;&nbsp;&nbsp;<a href="https://www.behance.net/gallery/246304295/IDV-INEXPLICAVEL" target="_blank">Inexplicável.idv</a>&nbsp;&nbsp;&nbsp;<a href="https://www.inexplicavelvinhos.com.br" target="_blank">Inexplicável.com</a>`;
       } else if (key === "lab_js") {
         // ATUALIZADO: Adicionamos classes e data-attributes aos links
         textElement.innerHTML = `<a href="https://matheusararipe.github.io/study-canvas-sketch/sketches/sketch01/dist/sketch01Funcional.html" target="_blank" class="sketch-link" data-id="sketch01">Agentes Elásticos</a>&nbsp;&nbsp;&nbsp<a href="https://matheusararipe.github.io/study-canvas-sketch/sketches/sketch02/dist/sketch02Funcional.html" target="_blank" class="sketch-link" data-id="sketch02">Ruído</a>&nbsp;&nbsp;&nbsp<a href="https://matheusararipe.github.io/study-canvas-sketch/sketches/sketch03/dist/" target="_blank" class="sketch-link" data-id="sketch03">Tripping</a>`;
