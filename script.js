@@ -7,6 +7,8 @@ const contentMap = {
   tt: "Matheus Araripe, Creative Coder & Designer.\nVeja mais aqui",
   // NOVA: Aba de trabalhos
   trabalhos_tt: "Inexplicável.ig  Inexplicável.idv  Inexplicável.com",
+  trabalhos_tt_mobile:
+    "Inexplicável.ig\n\nInexplicável.idv\n\nInexplicável.com",
   lab_tt_mobile:
     "Saia do celular!\nLab_tt é um espaço experimental que não cabe em uma tela vertical.",
   lab_js: "Agentes Elásticos   Ruído   Tripping",
@@ -207,7 +209,10 @@ const initMobileView = () => {
       if (key === "tt") {
         mobileTextElement.innerHTML = `Matheus Araripe<br>Creative Coder & Designer.<br><a href="https://www.behance.net/matheusararipe" target="_blank">Veja mais aqui</a>`;
       } else if (key === "trabalhos_tt") {
-        mobileTextElement.innerHTML = `<a href="https://www.instagram.com/inexplicavelvinhos?igsh=cHdlOXVkYXJpNGNz" target="_blank">Inexplicável.ig</a>\n<a href="https://www.behance.net/gallery/246304295/IDV-INEXPLICAVEL" target="_blank">Inexplicável.idv</a>\n<a href="https://www.inexplicavelvinhos.com.br" target="_blank">Inexplicável.com</a>`;
+        mobileTextElement.innerHTML = `<a href="https://www.instagram.com/inexplicavelvinhos?igsh=cHdlOXVkYXJpNGNz" target="_blank">Inexplicável.ig</a>&nbsp&nbsp<a href="https://www.behance.net/gallery/246304295/IDV-INEXPLICAVEL" target="_blank">Inexplicável.idv</a>&nbsp&nbsp<a href="https://www.inexplicavelvinhos.com.br" target="_blank">Inexplicável.com</a>`;
+      } else if (key === "trabalhos_tt_mobile") {
+        mobileTextElement.innerHTML = `
+          <a href="https://www.instagram.com/inexplicavelvinhos?igsh=cHdlOXVkYXJpNGNz" target="_blank">Inexplicável.ig</a><br><br><a href="https://www.behance.net/gallery/246304295/IDV-INEXPLICAVEL" target="_blank">Inexplicável.idv</a><br><br><a href="https://www.inexplicavelvinhos.com.br" target="_blank">Inexplicável.com</a>`;
       }
     });
   };
@@ -234,7 +239,7 @@ const initMobileView = () => {
     setActiveButton(mobNavTt);
   });
   mobNavTrab.addEventListener("click", () => {
-    updateInfoMobile("trabalhos_tt");
+    updateInfoMobile("trabalhos_tt_mobile");
     setActiveButton(mobNavTrab);
   });
   mobNavFuck.addEventListener("click", () => {
@@ -283,7 +288,7 @@ const initDesktopView = () => {
 
     typeWriter(text, textElement, 40, () => {
       if (key === "tt") {
-        textElement.innerHTML = `Matheus Araripe,<br>Creative Coder & Designer.<br><a href="https://www.behance.net/matheusararipe" target="_blank">Veja mais aqui</a>`;
+        textElement.innerHTML = `Matheus Araripe, Creative Coder & Designer.<br><a href="https://www.behance.net/matheusararipe" target="_blank">Veja mais aqui</a>`;
       } else if (key === "trabalhos_tt") {
         textElement.innerHTML = `<a href="https://www.instagram.com/inexplicavelvinhos?igsh=cHdlOXVkYXJpNGNz" target="_blank">Inexplicável.ig</a>&nbsp;&nbsp;&nbsp;<a href="https://www.behance.net/gallery/246304295/IDV-INEXPLICAVEL" target="_blank">Inexplicável.idv</a>&nbsp;&nbsp;&nbsp;<a href="https://www.inexplicavelvinhos.com.br" target="_blank">Inexplicável.com</a>`;
       } else if (key === "lab_js") {
